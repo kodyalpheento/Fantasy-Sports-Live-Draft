@@ -215,8 +215,11 @@ function autoNominate(s: DraftState, ctx: EngineContext, events: DraftEvent[]) {
   const team = s.config.teams[a.nominatorIndex];
   const player = chooseAutopick(s, team.id, ctx.players);
   if (!player) return complete(s, ctx.now, events);
-  const opening = Math.min(Math.max(s.config.auction.minBid, 1), maxBid(s, team.id));
-  startBidding(s, player.id, team.id, Math.max(opening, s.config.auction.minBid), ctx.now, events);
+  // Open near what the team thinks the player is worth, so a team with money to spend actually spends it.
+  const minBid = s.config.auction.minBid;
+  const value = autoBidValue(s, team.id, player, ctx.players);
+  const opening = Math.min(Math.max(Math.round(value * 0.6), minBid, 1), maxBid(s, team.id));
+  startBidding(s, player.id, team.id, Math.max(opening, minBid), ctx.now, events);
 }
 
 function autoPick(s: DraftState, teamId: string, ctx: EngineContext, events: DraftEvent[]) {

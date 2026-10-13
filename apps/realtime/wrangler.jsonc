@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "fsd-realtime",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [{ "name": "DRAFT_ROOM", "class_name": "DraftRoom" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DraftRoom"] }],
+  // Every 15 minutes: player roster sync (daily, inside the app) and scheduled backups.
+  "triggers": { "crons": ["*/15 * * * *"] },
+  "vars": {
+    // Where the web app lives. In production prefer the APP service binding below.
+    "APP_URL": "http://localhost:3000",
+    // Comma-separated browser origins allowed to open draft sockets. Empty = any (tokens are still required).
+    "ALLOWED_ORIGINS": ""
+  },
+  // Secrets (set with `wrangler secret put`, or .dev.vars locally): REALTIME_SECRET
+  // Production: uncomment to call the web worker directly instead of over the public internet.
+  // "services": [{ "binding": "APP", "service": "fsd-web" }],
+  "observability": { "enabled": true }
+}

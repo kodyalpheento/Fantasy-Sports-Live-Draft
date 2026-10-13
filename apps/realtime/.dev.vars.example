@@ -1,0 +1,2 @@
+# Copy to .dev.vars for `wrangler dev`. Must match REALTIME_SECRET in apps/web/.env
+REALTIME_SECRET=change-me-to-a-long-random-string

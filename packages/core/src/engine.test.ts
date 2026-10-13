@@ -266,6 +266,18 @@ describe('auction draft', () => {
     }
   });
 
+  it('autopick teams spend most of the league budget', () => {
+    const big = config({ type: 'auction', rosterSlots: { QB: 1, RB: 2, WR: 2, TE: 1, FLEX: 1, K: 1, DST: 1, BN: 6 }, auction: { budget: 200, minBid: 1, nominationSeconds: 5, bidSeconds: 5 } });
+    let s = createDraft(big);
+    for (const t of ['t1', 't2', 't3']) s = run(s, commish, { type: 'setAutopick', teamId: t, enabled: true }, { now: 0, players }).state;
+    s = run(s, commish, { type: 'start' }, { now: 0, players }).state;
+    let guard = 0;
+    while (s.status === 'running' && guard++ < 5000) s = tick(s, { now: nextWakeAt(s)!, players }).state;
+    expect(s.status).toBe('completed');
+    const left = Object.values(s.auction!.budgets).reduce((a, b) => a + b, 0);
+    expect(left).toBeLessThan(600 * 0.2);
+  });
+
   it('deducts keeper costs from budgets', () => {
     const s = createDraft({ ...cfg(), keepers: [{ teamId: 't1', playerId: 'p0', cost: 4 }] });
     expect(s.auction?.budgets.t1).toBe(6);

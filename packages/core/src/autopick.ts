@@ -1,6 +1,6 @@
 import { analyzeNeeds, type Fit } from './roster';
 import type { DraftState, PoolPlayer } from './types';
-import { draftedPlayerIds, maxBid, picksRemainingFor, teamPlayerIds } from './engine-helpers';
+import { auctionOpenSpots, draftedPlayerIds, maxBid, picksRemainingFor, teamPlayerIds } from './engine-helpers';
 
 const UNRANKED = 5000;
 const CANDIDATE_WINDOW = 40;
@@ -79,7 +79,10 @@ export function autoBidValue(state: DraftState, teamId: string, player: PoolPlay
   if (fit === 'none') return 0;
   if (player.rank == null || isKickerOrDefense(player)) return minBid;
   const n = Math.max(cfg.teams.length, 1);
-  const base = budget * 0.45 * Math.exp(-(player.rank - 1) / (n * 2.2));
-  const value = Math.round(base * FIT_VALUE[fit]);
+  const curve = budget * 0.45 * Math.exp(-(player.rank - 1) / (n * 2.2));
+  // Budget pacing: money left over at the end is wasted, so a team with plenty left per open spot bids up.
+  const open = Math.max(1, auctionOpenSpots(state, teamId));
+  const perSpot = (state.auction?.budgets[teamId] ?? 0) / open;
+  const value = Math.round(Math.max(curve, perSpot * 0.9) * FIT_VALUE[fit]);
   return Math.min(Math.max(value, minBid), maxBid(state, teamId));
 }

@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-ink-950: #070b16;
+  --color-ink-900: #0c1222;
+  --color-ink-850: #111a2e;
+  --color-ink-800: #16213a;
+  --color-ink-700: #22304f;
+  --color-ink-600: #33446a;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 10% -10%, #12284a 0%, transparent 60%), var(--color-ink-950);
+  color: #e5e7eb;
+  min-height: 100vh;
+}
+
+@utility card {
+  @apply rounded-2xl border border-white/5 bg-ink-900/80 p-5 shadow-xl shadow-black/20 backdrop-blur;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand-500 text-ink-950 hover:bg-brand-400;
+}
+@utility btn-secondary {
+  @apply btn border border-white/10 bg-ink-800 text-slate-100 hover:bg-ink-700;
+}
+@utility btn-danger {
+  @apply btn border border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20;
+}
+@utility btn-ghost {
+  @apply btn text-slate-300 hover:bg-white/5 hover:text-white;
+}
+@utility btn-sm {
+  @apply px-2.5 py-1 text-xs;
+}
+@utility input {
+  @apply w-full rounded-lg border border-white/10 bg-ink-950/60 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+}
+@utility label {
+  @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400;
+}
+@utility badge {
+  @apply inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide;
+}
+@utility table-row {
+  @apply border-b border-white/5 last:border-0;
+}
+
+@keyframes flashIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

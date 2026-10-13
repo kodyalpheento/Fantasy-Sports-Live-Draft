@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "fsd-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  // PostgreSQL through Hyperdrive (connection pooling at the edge). Create one with:
+  //   npx wrangler hyperdrive create livedraft --connection-string="postgres://..."
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "REPLACE_WITH_HYPERDRIVE_ID" }],
+  // Backup storage. Create with: npx wrangler r2 bucket create livedraft-backups
+  "r2_buckets": [{ "binding": "BACKUPS", "bucket_name": "livedraft-backups" }],
+  // Talk to the realtime worker directly instead of over the internet.
+  "services": [{ "binding": "REALTIME", "service": "fsd-realtime" }],
+  "vars": {
+    "APP_URL": "https://draft.example.com",
+    "REALTIME_URL": "https://fsd-realtime.example.workers.dev",
+    "EMAIL_FROM": "Live Draft <no-reply@example.com>",
+    "ALLOW_2FA_OPT_OUT": "false"
+  },
+  // Secrets (wrangler secret put): REALTIME_SECRET, ENCRYPTION_KEY, RESEND_API_KEY, ADMIN_EMAILS
+  "observability": { "enabled": true }
+}
