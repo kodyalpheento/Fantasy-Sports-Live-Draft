@@ -42,6 +42,25 @@ apps/web          Next.js (React + TypeScript): UI, server actions/API, PostgreS
 
 Browsers get a short-lived HMAC-signed token from `/api/drafts/:id/token` and use it to open the WebSocket. The web app and worker authenticate to each other with the shared `REALTIME_SECRET`.
 
+## Quick start (one command)
+
+Install [Node.js 20.9+](https://nodejs.org) and [Docker Desktop](https://www.docker.com/products/docker-desktop) (start it), then from the project folder:
+
+- **Windows:** double-click `setup.bat` (or run `setup.bat --start`)
+- **macOS / Linux:** `./setup.sh --start`
+
+The setup script installs dependencies, generates secrets into `apps/web/.env` and `apps/realtime/.dev.vars`, starts PostgreSQL in Docker, creates the tables, and loads the real NFL player list from Sleeper. Then `npm run dev` and open http://localhost:3000. Already have PostgreSQL? Put its URL in `apps/web/.env` as `DATABASE_URL` and run `node scripts/setup-local.mjs --no-docker`.
+
+### Player data from Sleeper
+
+```bash
+npm run players:sync -- --check                 # is api.sleeper.app reachable?
+npm run players:sync -- --remove-samples        # download real players, drop the sample ones
+npm run players:sync -- --file players.json     # import a file you saved yourself
+```
+
+If a firewall, VPN or proxy blocks the download, open https://api.sleeper.app/v1/players/nfl in a browser, save the page as `players.json`, and use `--file`. Once deployed, the app also re-syncs daily by itself.
+
 ## Local development
 
 Requirements: Node 20.9+, Docker (or any PostgreSQL 14+).

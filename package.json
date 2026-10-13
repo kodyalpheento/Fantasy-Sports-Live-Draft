@@ -15,7 +15,9 @@
     "db:generate": "npm run db:generate -w @fsd/web",
     "db:migrate": "npm run db:migrate -w @fsd/web",
     "db:seed": "npm run db:seed -w @fsd/web",
-    "deploy": "npm run deploy -w @fsd/realtime && npm run deploy -w @fsd/web"
+    "deploy": "npm run deploy -w @fsd/realtime && npm run deploy -w @fsd/web",
+    "players:sync": "npm run players:sync -w @fsd/web --",
+    "setup": "node scripts/setup-local.mjs"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

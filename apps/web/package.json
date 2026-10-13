@@ -13,7 +13,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "cf:build": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "players:sync": "tsx scripts/sync-players.ts"
   },
   "dependencies": {
     "@fsd/core": "*",

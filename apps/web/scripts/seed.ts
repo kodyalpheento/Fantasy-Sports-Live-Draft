@@ -11,7 +11,7 @@ import { players } from '../src/db/schema';
 
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error('DATABASE_URL is not set');
-const client = postgres(url, { max: 1 });
+const client = postgres(url, { max: 1, onnotice: () => {} });
 const db = drizzle(client);
 
 const TEAMS: [string, string, string][] = [
