@@ -1,0 +1,27 @@
+{
+  "name": "fantasy-sports-live-draft",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n web,realtime -c blue,magenta \"npm run dev -w @fsd/web\" \"npm run dev -w @fsd/realtime\"",
+    "build": "npm run build -w @fsd/web",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:up": "docker compose up -d postgres",
+    "db:generate": "npm run db:generate -w @fsd/web",
+    "db:migrate": "npm run db:migrate -w @fsd/web",
+    "db:seed": "npm run db:seed -w @fsd/web",
+    "deploy": "npm run deploy -w @fsd/realtime && npm run deploy -w @fsd/web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
